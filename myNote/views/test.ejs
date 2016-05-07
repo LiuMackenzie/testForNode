@@ -1,0 +1,30 @@
+<%- include header %>
+<div>
+    <ul id='bp-3-element-sm-test'></ul>
+</div>
+<script src="/js/bootstrap-paginator.js"></script>
+<script src="/js/qunit-1.11.0.js"></script>
+<script type="text/javascript">
+
+    $(function(){
+        test("Test bootstrap v3 rendering", function(){
+
+
+            var element = $('#bp-3-element-sm-test');
+
+            options = {
+                size:"small",
+                bootstrapMajorVersion:3,
+                currentPage: 3,
+                numberOfPages: 5,
+                totalPages:11
+            };
+
+            element.bootstrapPaginator(options);
+
+            ok(element.hasClass('pagination-sm'),"Root element should have pagination-sm class");
+        })
+    });
+
+</script>
+<%- include footer %>

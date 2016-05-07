@@ -1,0 +1,80 @@
+﻿<%-  include header %>
+<div class="text-center page-title">新用户注册</div>
+<div class="container">
+
+    <div class="row">
+        <div class="col-xs-4 col-xs-offset-4">
+            <form method="post">
+                <div class="form-group">
+                    <div class="msg_tag" name="username_msg" id="username_msg"></div>
+                    <input  type="text" class="form-control" name="username" id="username" onblur="check_username()" placeholder="用户名">
+                </div>
+                <div class="form-group">
+                    <div class="msg_tag" name="password_msg" id="password_msg"></div>
+                    <input type="password" class="form-control" name="password" id="password" onblur="check_password()" placeholder="密码">
+                </div>
+                <div class="form-group">
+                    <div class="msg_tag" name="passwordRepeat_msg" id="passwordRepeat_msg"></div>
+                    <input type="password" class="form-control" name="passwordRepeat" id="passwordRepeat" onblur="check_repeatPassword()" placeholder="确认密码">
+                </div>
+                <button type="submit" class="btn btn-default center-block">注册</button>
+            </form>
+        </div>
+
+    <script>
+
+        $("#username").blur(function(){
+            $.ajax({
+                type: "get",
+                url: "/registerTest/"+$("#username").val(),
+                dataType: "json",
+                success: function(data){
+                    if(data){
+                        $("#username_msg").html("<p style=\"color:green\">该用户名可以使用！</p>");
+
+                    } else{
+                        $("#username_msg").html("用户名已被申请！");
+                    }
+                }
+            });
+        });
+
+
+        function check_username(){
+            var tarObj = document.getElementById("username").value;
+            var msgObj = document.getElementById("username_msg");
+            msgObj.innerHTML='';
+            var reg = /^[0-9a-zA-z_]{3,20}$/;
+            if(tarObj.length==0){
+                msgObj.innerHTML="用户名不能为空!";
+            }else if(!reg.test(tarObj))
+            {
+                msgObj.innerHTML="用户名只能是字母、数字、下划线的组合，长度3-20个字符！";
+            }
+
+        }
+
+        function check_password(){
+            var tarObj = document.getElementById("password").value;
+            var msgObj = document.getElementById("password_msg");
+            msgObj.innerHTML='';
+            var reg = /(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])[a-zA-Z0-9]{6,15}/;
+            if(!reg.test(tarObj)){
+                msgObj.innerHTML="密码长度不能少于6，必须同时包含数字、小写字母、大写字母!";
+            }
+        }
+
+        function check_repeatPassword(){
+            var tarObj1 = document.getElementById("passwordRepeat").value;
+            var tarObj2 = document.getElementById("password").value;
+            var msgObj = document.getElementById("passwordRepeat_msg");
+            msgObj.innerHTML='';
+            if(tarObj1!=tarObj2){
+                msgObj.innerHTML="两次密码输入不一致！";
+            }
+        }
+    </script>
+
+    </div>
+</div>
+<%- include footer %>
